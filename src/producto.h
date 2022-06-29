@@ -16,6 +16,10 @@ namespace TP3 {
         Producto(int numero, string nombre, int existencias);
         Producto();
 
+        int conseguirNumero();
+        void modificarNombre();
+        void modificarExistencias();
+
         friend ostream& operator << (ostream &o, const Producto *producto);
 
     };

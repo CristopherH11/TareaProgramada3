@@ -19,12 +19,14 @@ namespace TP3 {
         Tienda();
         ~Tienda();
 
-        void AgregarProducto(Producto *nuevoProducto);
+        void agregarProducto(Producto *nuevoProducto);
+        void eliminarProducto(int numero);
+        void modificarProducto(int numero, int tipo);
 
-        void GuardarEnStreamBinario(ostream *streamSalida);
-        void CargarDesdeStreamBinario(istream *streamEntrada);
+        void guardarEnStreamBinario(ostream *streamSalida);
+        void cargarDesdeStreamBinario(istream *streamEntrada);
 
-        friend ostream& operator << (ostream &o, const Planilla *planilla);
+        friend ostream& operator << (ostream &o, const Producto *producto);
     };
 }
 
