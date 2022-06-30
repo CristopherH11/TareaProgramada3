@@ -25,16 +25,16 @@ namespace TP3{
     }
 
     void Tienda::modificarProducto(int numero, int tipo){
+        std::string nombre;
+        int existencias;
         for (Producto *producto : this->catalogo) {
             if (producto->conseguirNumero()==numero) {
                 switch (tipo) {
                     case 1:
-                        std::string nombre;
                         std::cin >> nombre;
                         producto->modificarNombre(nombre);
                         break;
                     case 2:
-                        int existencias;
                         std::cin >> existencias;
                         producto->modificarExistencias(existencias);
                         break;
