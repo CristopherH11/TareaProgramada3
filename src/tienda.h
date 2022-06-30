@@ -23,10 +23,10 @@ namespace TP3 {
         void eliminarProducto(int numero);
         void modificarProducto(int numero, int tipo);
 
-        void guardarEnStreamBinario(ostream *streamSalida);
-        void cargarDesdeStreamBinario(istream *streamEntrada);
+        void guardarEnStreamBinario(std::ostream *streamSalida);
+        void cargarDesdeStreamBinario(std::istream *streamEntrada);
 
-        friend ostream& operator << (ostream &o, const Producto *producto);
+        friend std::ostream& operator << (std::ostream &o, const Tienda *tienda);
     };
 }
 

@@ -1,11 +1,15 @@
 #ifndef PRODUCTO_H
 #define PRODUCTO_H
 
+#include <iostream>
 #include <string>
+#include <cstring>
 
 namespace TP3 {
 
     class Producto {
+        
+        protected:
 
         int numero;
         char nombre[20];
@@ -13,14 +17,17 @@ namespace TP3 {
 
         public:
 
-        Producto(int numero, string nombre, int existencias);
+        Producto(int numero, std::string nombre, int existencias);
         Producto();
 
         int conseguirNumero();
-        void modificarNombre();
-        void modificarExistencias();
+        std::string conseguirNombre();
+        int conseguirExistencias();
 
-        friend ostream& operator << (ostream &o, const Producto *producto);
+        void modificarNombre(std::string nombre);
+        void modificarExistencias(int existencias);
+
+        friend std::ostream& operator << (std::ostream &o, const Producto *producto);
 
     };
 }
