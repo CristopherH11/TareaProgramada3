@@ -39,7 +39,7 @@ namespace TP3{
     }
 
     std::ostream& operator << (std::ostream &o, const Producto *producto){
-        o << " " << producto->numero << ". " << producto->nombre << ": " << producto->existencias;  
+        o << producto->numero << ". " << producto->nombre << ": " << producto->existencias;  
         return o;
     }
 

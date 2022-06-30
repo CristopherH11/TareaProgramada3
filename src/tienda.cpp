@@ -31,10 +31,12 @@ namespace TP3{
             if (producto->conseguirNumero()==numero) {
                 switch (tipo) {
                     case 1:
+                        std::cout << "Escribe el nuevo nombre";
                         std::cin >> nombre;
                         producto->modificarNombre(nombre);
                         break;
                     case 2:
+                        std::cout << "Escribe la nueva cantidad de existencias";
                         std::cin >> existencias;
                         producto->modificarExistencias(existencias);
                         break;
