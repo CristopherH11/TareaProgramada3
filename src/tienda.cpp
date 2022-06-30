@@ -24,7 +24,10 @@ namespace TP3{
         }
     }
 
-    void Tienda::modificarProducto(int numero, int tipo){
+    void Tienda::modificarProducto(int numero){
+        int tipo;
+        std::cout << "Escribe 1 si quieres cambiar el nombre o 2 si quieres cambiar las existencias";
+        std::cin >> tipo;
         std::string nombre;
         int existencias;
         for (Producto *producto : this->catalogo) {

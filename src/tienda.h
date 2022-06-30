@@ -21,7 +21,7 @@ namespace TP3 {
 
         void agregarProducto(Producto *nuevoProducto);
         void eliminarProducto(int numero);
-        void modificarProducto(int numero, int tipo);
+        void modificarProducto(int numero);
 
         void guardarEnStreamBinario(std::ostream *streamSalida);
         void cargarDesdeStreamBinario(std::istream *streamEntrada);
