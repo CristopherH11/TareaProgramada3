@@ -19,6 +19,7 @@ namespace TP3 {
 
         Producto(int numero, std::string nombre, int existencias);
         Producto();
+        ~Producto();
 
         int conseguirNumero();
         std::string conseguirNombre();

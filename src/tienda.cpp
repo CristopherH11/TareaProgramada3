@@ -2,6 +2,13 @@
 
 namespace TP3{
 
+    Tienda::Tienda(std::string nombre, std::string direccionInternet, std::string direccion, std::string telefono){
+        strcpy(this->nombre, nombre.c_str());
+        strcpy(this->direccionInternet, direccionInternet.c_str());
+        strcpy(this->direccion, direccion.c_str());
+        strcpy(this->telefono, telefono.c_str());
+    }
+
     Tienda::Tienda() {
 
     }
@@ -24,10 +31,7 @@ namespace TP3{
         }
     }
 
-    void Tienda::modificarProducto(int numero){
-        int tipo;
-        std::cout << "Escribe 1 si quieres cambiar el nombre o 2 si quieres cambiar las existencias";
-        std::cin >> tipo;
+    void Tienda::modificarProducto(int numero, int tipo){
         std::string nombre;
         int existencias;
         for (Producto *producto : this->catalogo) {
@@ -77,6 +81,31 @@ namespace TP3{
         }
 
     }
+
+    std::string Tienda::conseguirNombre(){
+        return this->nombre;
+
+    }
+
+    std::string Tienda::conseguirDireccionInternet(){
+        return this->direccionInternet;
+
+    }
+
+    std::string Tienda::conseguirDireccion(){
+        return this->direccion;
+
+    }
+
+    std::string Tienda::conseguirTelefono(){
+        return this->telefono;
+
+    }
+
+    int Tienda::cantidadPlanilla(){
+        return this->catalogo.size();
+    }
+
 
     std::ostream& operator << (std::ostream &o, const Tienda *tienda) {
         o << tienda->nombre << std::endl << tienda->direccionInternet << std::endl 

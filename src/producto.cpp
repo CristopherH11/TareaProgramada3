@@ -14,6 +14,11 @@ namespace TP3{
         this->existencias = 0;
     }
 
+    Producto::~Producto(){
+
+        
+    }
+
     int Producto::conseguirNumero(){
         return this->numero;
 

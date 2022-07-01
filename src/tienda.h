@@ -4,6 +4,8 @@
 #include <vector>
 #include "producto.h"
 #include <iostream>
+#include <string>
+#include <cstring>
 
 namespace TP3 {
 
@@ -16,15 +18,23 @@ namespace TP3 {
         std::vector<Producto *> catalogo;
 
         public:
+        Tienda(std::string nombre, std::string direccionInternet, std::string direccion, std::string telefono);
         Tienda();
         ~Tienda();
 
         void agregarProducto(Producto *nuevoProducto);
         void eliminarProducto(int numero);
-        void modificarProducto(int numero);
+        void modificarProducto(int numero, int tipo);
 
         void guardarEnStreamBinario(std::ostream *streamSalida);
         void cargarDesdeStreamBinario(std::istream *streamEntrada);
+
+        int cantidadCatalogo();
+
+        std::string conseguirNombre();
+        std::string conseguirDireccionInternet();
+        std::string conseguirDireccion();
+        std::string conseguirTelefono();
 
         friend std::ostream& operator << (std::ostream &o, const Tienda *tienda);
     };
