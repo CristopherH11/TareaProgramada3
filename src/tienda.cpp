@@ -24,10 +24,13 @@ namespace TP3{
     }
 
     void Tienda::eliminarProducto(int numero){
+        int contador = 0;
         for (Producto *producto : this->catalogo) {
             if (producto->conseguirNumero()==numero) {
+                this->catalogo.erase(catalogo.begin() + contador);
                 delete producto;
             }
+            contador++;
         }
     }
 
@@ -38,12 +41,12 @@ namespace TP3{
             if (producto->conseguirNumero()==numero) {
                 switch (tipo) {
                     case 1:
-                        std::cout << "Escribe el nuevo nombre";
+                        std::cout << "Escribe el nuevo nombre: ";
                         std::cin >> nombre;
                         producto->modificarNombre(nombre);
                         break;
                     case 2:
-                        std::cout << "Escribe la nueva cantidad de existencias";
+                        std::cout << "Escribe la nueva cantidad de existencias: ";
                         std::cin >> existencias;
                         producto->modificarExistencias(existencias);
                         break;
@@ -102,8 +105,17 @@ namespace TP3{
 
     }
 
-    int Tienda::cantidadPlanilla(){
+    int Tienda::cantidadCatalogo(){
         return this->catalogo.size();
+    }
+
+    Producto* Tienda::conseguirProducto(int numero){
+        for (Producto *producto : this->catalogo) {
+            if (producto->conseguirNumero()==numero) {
+                return producto;
+            }
+        }
+        return nullptr;
     }
 
 

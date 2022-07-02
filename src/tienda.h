@@ -36,6 +36,8 @@ namespace TP3 {
         std::string conseguirDireccion();
         std::string conseguirTelefono();
 
+        Producto* conseguirProducto(int numero);
+
         friend std::ostream& operator << (std::ostream &o, const Tienda *tienda);
     };
 }
