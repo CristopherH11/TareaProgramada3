@@ -2,6 +2,8 @@
 #include "../src/tienda.h"
 #include "../src/producto.h"
 #include <string>
+#include <fstream>
+#include <sstream>
 
 using namespace TP3;
 
@@ -32,34 +34,8 @@ TEST(Test_Tienda, Test_Tienda_Constructor){
 
 }
 
-TEST(Test_Tienda, Test_Tienda_ConstructorBinario){
-    std::string nombre = "Ejemplo";
-    std::string direccionInt = "ejemplo@gmail.com";
-    std::string direccion = "Cartago Centro";
-    std::string telefono = "88888888";
 
-    Tienda *nuevaTienda = new Tienda(nombre, direccionInt, direccion, telefono);
-
-    std::string nombreEsperado = "Ejemplo";
-    std::string nombreActual = nuevaTienda->conseguirNombre();
-
-    std::string direccionIntEsperada = "ejemplo@gmail.com";
-    std::string direccionIntActual = nuevaTienda->conseguirDireccionInternet();
-
-    std::string direccionEsperada = "Cartago Centro";
-    std::string direccionActual = nuevaTienda->conseguirDireccion();
-
-    std::string telefonoEsperado = "88888888";
-    std::string telefonoActual = nuevaTienda->conseguirTelefono();
-
-    EXPECT_EQ(nombreActual, nombreEsperado);
-    EXPECT_EQ(direccionIntActual, direccionIntEsperada);
-    EXPECT_EQ(direccionActual, direccionEsperada);
-    EXPECT_EQ(telefonoActual, telefonoEsperado);
-
-}
-
-TEST(Test_Tienda, Test_Tienda_AgregarProducto){
+TEST(Test_Tienda, Test_Tienda_Agregar_Producto){
     std::string nombre = "Ejemplo";
     std::string direccionInt = "ejemplo@gmail.com";
     std::string direccion = "Cartago Centro";
@@ -83,7 +59,7 @@ TEST(Test_Tienda, Test_Tienda_AgregarProducto){
     EXPECT_EQ(actual, esperado);
 }
 
-TEST(Test_Tienda, Test_Tienda_ModificarProducto){
+TEST(Test_Tienda, Test_Tienda_Modificar_Producto){
     std::string nombre = "Ejemplo";
     std::string direccionInt = "ejemplo@gmail.com";
     std::string direccion = "Cartago Centro";
@@ -111,7 +87,7 @@ TEST(Test_Tienda, Test_Tienda_ModificarProducto){
     EXPECT_EQ(existenciasEsperadas, existenciasActuales);
 }
 
-TEST(Test_Tienda, Test_Tienda_EliminarProducto){
+TEST(Test_Tienda, Test_Tienda_Eliminar_Producto){
     std::string nombre = "Ejemplo";
     std::string direccionInt = "ejemplo@gmail.com";
     std::string direccion = "Cartago Centro";
@@ -138,33 +114,6 @@ TEST(Test_Tienda, Test_Tienda_EliminarProducto){
 
 }
 
-TEST(Test_Tienda, Test_Tienda_GuardarenArchivoBinario){
-    std::string nombre = "Ejemplo";
-    std::string direccionInt = "ejemplo@gmail.com";
-    std::string direccion = "Cartago Centro";
-    std::string telefono = "88888888";
-
-    Tienda *nuevaTienda = new Tienda(nombre, direccionInt, direccion, telefono);
-
-    std::string nombreEsperado = "Ejemplo";
-    std::string nombreActual = nuevaTienda->conseguirNombre();
-
-    std::string direccionIntEsperada = "ejemplo@gmail.com";
-    std::string direccionIntActual = nuevaTienda->conseguirDireccionInternet();
-
-    std::string direccionEsperada = "Cartago Centro";
-    std::string direccionActual = nuevaTienda->conseguirDireccion();
-
-    std::string telefonoEsperado = "88888888";
-    std::string telefonoActual = nuevaTienda->conseguirTelefono();
-
-    EXPECT_EQ(nombreActual, nombreEsperado);
-    EXPECT_EQ(direccionIntActual, direccionIntEsperada);
-    EXPECT_EQ(direccionActual, direccionEsperada);
-    EXPECT_EQ(telefonoActual, telefonoEsperado);
-
-}
-
 TEST(Test_Tienda, Test_Tienda_Operador){
     std::string nombre = "Ejemplo";
     std::string direccionInt = "ejemplo@gmail.com";
@@ -185,4 +134,60 @@ TEST(Test_Tienda, Test_Tienda_Operador){
 
     EXPECT_EQ(actual, esperado);
 
+}
+
+TEST(Test_Tienda, Test_Tienda_Cargar_y_Guardar_en_Binario){
+    std::string nombre = "Ejemplo";
+    std::string direccionInt = "ejemplo@gmail.com";
+    std::string direccion = "Cartago Centro";
+    std::string telefono = "88888888";
+
+    Tienda *nuevaTienda1 = new Tienda(nombre, direccionInt, direccion, telefono);
+
+    Producto *productoNuevo = new Producto(1, "Papaya", 100);
+    nuevaTienda1->agregarProducto(productoNuevo);
+
+    std::ofstream archivoSalida;
+
+    archivoSalida.open("archivo_test.dat", std::ios::out|std::ios::binary);
+
+    if (!archivoSalida.is_open())
+    {
+        std::cerr << "No se pudo abrir archivo archivo_test.dat para escribir los datos";
+        FAIL();
+    }
+    
+    nuevaTienda1->guardarEnStreamBinario(&archivoSalida);
+
+    archivoSalida.close();
+
+    Tienda *nuevaTienda2 = new Tienda();
+
+    std::ifstream archivoEntrada;
+
+    archivoEntrada.open("archivo_test.dat", std::ios::in|std::ios::binary);
+
+    if (!archivoEntrada.is_open())
+    {
+        std::cerr << "No se pudo abrir archivo archivo_test.dat para escribir los datos";
+        FAIL();
+    }
+
+    nuevaTienda2->cargarDesdeStreamBinario(&archivoEntrada);
+
+    archivoEntrada.close();
+
+    std::ostringstream streamEsperado {};
+    streamEsperado << nuevaTienda1;
+
+    std::ostringstream streamActual {};
+    streamActual << nuevaTienda2;
+
+    std::string esperado = streamEsperado.str();
+    std::string actual = streamActual.str();
+
+    delete nuevaTienda1;
+    delete nuevaTienda2;
+
+    EXPECT_EQ(actual, esperado);
 }
