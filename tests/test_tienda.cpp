@@ -1,6 +1,9 @@
 #include <gtest/gtest.h>
 #include "../src/tienda.h"
 #include "../src/producto.h"
+#include "../src/excepcionProductoNoExiste.h"
+#include "../src/excepcionProductoYaExiste.h"
+#include "../src/excepcionTipoIncorrecto.h"
 #include <string>
 #include <fstream>
 #include <sstream>
@@ -48,7 +51,7 @@ TEST(Test_Tienda, Test_Tienda_Agregar_Producto){
     int existencias = 100;
 
     Producto *nuevoProducto = new Producto(numero, nombre2, existencias);
-    Producto *nuevoProducto2 = new Producto(2, nombre2, existencias);
+    Producto *nuevoProducto2 = new Producto(2, "Fresa", existencias);
     
     nuevaTienda->agregarProducto(nuevoProducto);
     nuevaTienda->agregarProducto(nuevoProducto2);
@@ -100,7 +103,7 @@ TEST(Test_Tienda, Test_Tienda_Eliminar_Producto){
     int existencias = 100;
 
     Producto *nuevoProducto = new Producto(1, nombre2, existencias);
-    Producto *nuevoProducto2 = new Producto(2, nombre2, existencias);
+    Producto *nuevoProducto2 = new Producto(2, "Fresa", existencias);
     
     nuevaTienda->agregarProducto(nuevoProducto);
     nuevaTienda->agregarProducto(nuevoProducto2);
@@ -190,4 +193,68 @@ TEST(Test_Tienda, Test_Tienda_Cargar_y_Guardar_en_Binario){
     delete nuevaTienda2;
 
     EXPECT_EQ(actual, esperado);
+}
+
+TEST(Test_Tienda, Test_ExcepcionProductoYaExiste){
+    std::string nombre = "Ejemplo";
+    std::string direccionInt = "ejemplo@gmail.com";
+    std::string direccion = "Cartago Centro";
+    std::string telefono = "88888888";
+
+    Tienda *nuevaTienda = new Tienda(nombre, direccionInt, direccion, telefono);
+
+
+    Producto *nuevoProducto = new Producto(1, "Papaya", 50);
+    Producto *nuevoProducto2 = new Producto(1, "Banano", 30);
+    
+    nuevaTienda->agregarProducto(nuevoProducto);
+
+    EXPECT_THROW({
+        nuevaTienda->agregarProducto(nuevoProducto2);
+    }, ExcepcionProductoYaExiste);
+
+}
+
+TEST(Test_Tienda, Test_ExcepcionProductoNoExiste){
+    std::string nombre = "Ejemplo";
+    std::string direccionInt = "ejemplo@gmail.com";
+    std::string direccion = "Cartago Centro";
+    std::string telefono = "88888888";
+
+    Tienda *nuevaTienda = new Tienda(nombre, direccionInt, direccion, telefono);
+
+
+    Producto *nuevoProducto = new Producto(1, "Papaya", 50);
+    Producto *nuevoProducto2 = new Producto(2, "Banano", 30);
+    
+    nuevaTienda->agregarProducto(nuevoProducto);
+    nuevaTienda->agregarProducto(nuevoProducto2);
+
+    EXPECT_THROW({
+            nuevaTienda->eliminarProducto(3);
+        }, ExcepcionProductoNoExiste);
+
+        EXPECT_THROW({
+            nuevaTienda->modificarProducto(3, 1);
+        }, ExcepcionProductoNoExiste);
+}
+
+TEST(Test_Tienda, Test_ExcepcionTipoIncorrecto){
+    std::string nombre = "Ejemplo";
+    std::string direccionInt = "ejemplo@gmail.com";
+    std::string direccion = "Cartago Centro";
+    std::string telefono = "88888888";
+
+    Tienda *nuevaTienda = new Tienda(nombre, direccionInt, direccion, telefono);
+
+
+    Producto *nuevoProducto = new Producto(1, "Papaya", 50);
+    Producto *nuevoProducto2 = new Producto(2, "Banano", 30);
+    
+    nuevaTienda->agregarProducto(nuevoProducto);
+    nuevaTienda->agregarProducto(nuevoProducto2);
+
+        EXPECT_THROW({
+            nuevaTienda->modificarProducto(2, 0);
+        }, ExcepcionTipoIncorrecto);
 }
