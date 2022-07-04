@@ -31,19 +31,23 @@ namespace TP3{
     }
 
     void Tienda::eliminarProducto(int numero){
+        int referencia = 0;
         int contador = 0;
         for (Producto *producto : this->catalogo) {
             if (producto->conseguirNumero()==numero) {
                 this->catalogo.erase(catalogo.begin() + contador);
                 delete producto;
-                return 0;
+                referencia = 1;
             }
             contador++;
         }
-        throw ExcepcionProductoNoExiste();
+        if (referencia==0){
+            throw ExcepcionProductoNoExiste();
+        }    
     }
 
     void Tienda::modificarProducto(int numero, int tipo){
+        int referencia = 0;
         std::string nombre;
         int existencias;
         for (Producto *producto : this->catalogo) {
@@ -53,20 +57,22 @@ namespace TP3{
                         std::cout << "Escribe el nuevo nombre: ";
                         std::cin >> nombre;
                         producto->modificarNombre(nombre);
-                        return 0;
+                        referencia=1;
                         break;
                     case 2:
                         std::cout << "Escribe la nueva cantidad de existencias: ";
                         std::cin >> existencias;
                         producto->modificarExistencias(existencias);
-                        return 0;
+                        referencia=1;
                         break;
                     default:
                         throw ExcepcionTipoIncorrecto();
                 }
             }
         }
-        throw ExcepcionProductoNoExiste();
+        if (referencia==0){
+            throw ExcepcionProductoNoExiste();
+        }  
     }
 
     void Tienda::guardarEnStreamBinario(std::ostream *streamSalida){

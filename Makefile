@@ -1,3 +1,12 @@
+all:
+	mkdir -p obj
+	mkdir -p bin
+	g++ -g -c --std=c++17 -fpic src/producto.cpp -o obj/producto.o
+	g++ -g -c --std=c++17 -fpic src/tienda.cpp -o obj/tienda.o
+	g++ -shared -o bin/libtienda.so obj/producto.o obj/tienda.o
+	mkdir -p bin/include
+	cp src/tienda.h ./bin/include
+	cp src/producto.h ./bin/include
 test:
 	mkdir -p bin
 	g++ -g -c --std=c++17 src/producto.cpp -o bin/producto.o
