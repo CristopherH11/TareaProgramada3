@@ -1,4 +1,7 @@
 #include "tienda.h"
+#include "excepcionProductoNoExiste.h"
+#include "excepcionProductoYaExiste.h"
+#include "excepcionTipoIncorrecto.h"
 
 namespace TP3{
 
@@ -19,8 +22,12 @@ namespace TP3{
         }
     }
 
-    void Tienda::agregarProducto(Producto *producto){
-        this->catalogo.push_back(producto);
+    void Tienda::agregarProducto(Producto *productoNuevo){
+        for (Producto *producto : this->catalogo){
+            if (producto->conseguirNumero()==productoNuevo->conseguirNumero() || producto->conseguirNombre()==productoNuevo->conseguirNombre())
+                throw ExcepcionProductoYaExiste();
+        }
+        this->catalogo.push_back(productoNuevo);
     }
 
     void Tienda::eliminarProducto(int numero){
@@ -29,9 +36,11 @@ namespace TP3{
             if (producto->conseguirNumero()==numero) {
                 this->catalogo.erase(catalogo.begin() + contador);
                 delete producto;
+                return 0;
             }
             contador++;
         }
+        throw ExcepcionProductoNoExiste();
     }
 
     void Tienda::modificarProducto(int numero, int tipo){
@@ -44,21 +53,27 @@ namespace TP3{
                         std::cout << "Escribe el nuevo nombre: ";
                         std::cin >> nombre;
                         producto->modificarNombre(nombre);
+                        return 0;
                         break;
                     case 2:
                         std::cout << "Escribe la nueva cantidad de existencias: ";
                         std::cin >> existencias;
                         producto->modificarExistencias(existencias);
+                        return 0;
                         break;
                     default:
-                        break;
+                        throw ExcepcionTipoIncorrecto();
                 }
             }
         }
+        throw ExcepcionProductoNoExiste();
     }
 
     void Tienda::guardarEnStreamBinario(std::ostream *streamSalida){
-
+        streamSalida->write((char *)nombre, sizeof(nombre));
+        streamSalida->write((char *)direccionInternet, sizeof(direccionInternet));
+        streamSalida->write((char *)direccion, sizeof(direccion));
+        streamSalida->write((char *)telefono, sizeof(telefono));
         for (Producto *producto : this->catalogo) {
             streamSalida->write((char *)producto, sizeof(Producto));
         }
@@ -69,14 +84,16 @@ namespace TP3{
 
         streamEntrada->seekg( 0, std::ios::end );
         int cantidadBytesEnArchivo = streamEntrada->tellg();
-        int cantidadProductos = (cantidadBytesEnArchivo-71) / sizeof(Producto);
+        int cantidadInformacion= cantidadBytesEnArchivo - sizeof(nombre) - sizeof(direccionInternet) - sizeof(direccion) - sizeof(telefono);
+        int cantidadProductos = (cantidadBytesEnArchivo-cantidadInformacion) / sizeof(Producto);
 
+        streamEntrada->seekg( 0, std::ios::beg ); 
         streamEntrada->read((char *)nombre, sizeof(nombre));
-        streamEntrada->read((char *)direccion, sizeof(direccion));
         streamEntrada->read((char *)direccionInternet, sizeof(direccionInternet));
+        streamEntrada->read((char *)direccion, sizeof(direccion));
         streamEntrada->read((char *)telefono, sizeof(telefono));
 
-        for (int indice=0; indice<cantidadProductos; indice++ ){
+        for (int indice=0; indice<cantidadProductos-1; indice++){
             Producto *productoNuevo = new Producto();
             streamEntrada->read((char *)productoNuevo, sizeof(Producto));
 
@@ -115,7 +132,7 @@ namespace TP3{
                 return producto;
             }
         }
-        return nullptr;
+        throw ExcepcionProductoNoExiste();
     }
 
 

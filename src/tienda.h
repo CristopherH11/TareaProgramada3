@@ -14,7 +14,7 @@ namespace TP3 {
         char nombre[15];
         char direccionInternet[24];
         char direccion[24];
-        char telefono[8];
+        char telefono[9];
         std::vector<Producto *> catalogo;
 
         public:
