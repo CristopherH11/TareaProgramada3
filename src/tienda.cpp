@@ -13,7 +13,11 @@ namespace TP3{
     }
 
     Tienda::Tienda() {
-
+        std::string temp = "";
+        strcpy(this->nombre, temp.c_str());
+        strcpy(this->direccionInternet, temp.c_str());
+        strcpy(this->direccion, temp.c_str());
+        strcpy(this->telefono, temp.c_str());
     }
 
     Tienda::~Tienda() {
@@ -46,7 +50,7 @@ namespace TP3{
         }    
     }
 
-    void Tienda::modificarProducto(int numero, int tipo){
+    void Tienda::modificarProducto(int numero, int tipo, std::string valor){
         int referencia = 0;
         std::string nombre;
         int existencias;
@@ -54,19 +58,14 @@ namespace TP3{
             if (producto->conseguirNumero()==numero) {
                 switch (tipo) {
                     case 1:
-                        std::cout << "Escribe el nuevo nombre: ";
-                        std::cin >> nombre;
-                        producto->modificarNombre(nombre);
+                        producto->modificarNombre(valor);
                         referencia=1;
                         break;
                     case 2:
-                        std::cout << "Escribe la nueva cantidad de existencias: ";
-                        std::cin >> existencias;
+                        int existencias= stoi(valor);
                         producto->modificarExistencias(existencias);
                         referencia=1;
                         break;
-                    default:
-                        throw ExcepcionTipoIncorrecto();
                 }
             }
         }
